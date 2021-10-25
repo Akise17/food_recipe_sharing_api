@@ -19,5 +19,11 @@ class Api::V1::AuthenticationController < Api::ApplicationController
 
         render json: verify.as_json, status: verify[:meta][:status]   
     end
+
+    def email_valid
+        data = AbstractApi::EmailValidation.run("uchan.mochan@gmail.com")
+        render json: data.as_json
+    end
+    
     
 end

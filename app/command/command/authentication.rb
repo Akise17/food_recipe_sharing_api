@@ -1,22 +1,28 @@
 module Command
     class Authentication
         def self.sign_up(params)
-            user = User.find_by(email: params[:email])
+            email_validation = AbstractApi::EmailValidation.run(params[:email])
 
-            if !user.present?
-                email_id = Array.new(12){[*"0".."9"].sample}.join    
-                user = User.create(email: params[:email], email_id: email_id, role:params[:role])
-                puts "Not Present"
-                puts user.as_json
-                code = 201
+            if :ok
+                user = User.find_by(email: params[:email])
+
+                if !user.present?
+                    email_id = Array.new(12){[*"0".."9"].sample}.join    
+                    user = User.create(email: params[:email], email_id: email_id, role:params[:role])
+                    puts "Not Present"
+                    puts user.as_json
+                    code = 201
+                else
+                    code = 200
+                end
+                otp = Array.new(7){[*"0".."9"].sample}.join
+                hashed_password = BCrypt::Password.create(otp)
+                user.update_attributes(otp: hashed_password, otp_expired: Time.now + 5.minutes)
+                emaillog = OtpMailer.email_otp(params[:email], otp).deliver_later
+                Handler::Res.call(code, "Waiting for OTP", user)
             else
-                code = 200
+                Handler::Res.call(400, "Email not valid", user)
             end
-            otp = Array.new(7){[*"0".."9"].sample}.join
-            hashed_password = BCrypt::Password.create(otp)
-            user.update_attributes(otp: hashed_password, otp_expired: Time.now + 5.minutes)
-            emaillog = OtpMailer.email_otp(params[:email], otp).deliver_later
-            Handler::Res.call(code, "Waiting for OTP", user)
         end
 
         def self.verify_otp(params)
@@ -29,11 +35,9 @@ module Command
                 auth = AuthenticateUser.call(user.email)
 
                 data = {
-                    data: {
                         user: user.as_json, 
                         token: auth.result
                     }
-                }
                 
                 Handler::Res.call(200, "This user has been verified", data)
             else
