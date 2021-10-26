@@ -4,7 +4,8 @@ Rails.application.routes.draw do
       post  "/signup", to: "authentication#signup"
       post  "/verify", to: "authentication#verify_email"
 
-      get "/email_valid", to: "authentication#email_valid"
+      get   "/recipe/search", to: "recipe#search_by_name"
+      get   "/recipe/recomendation", to: "recipe#search_by_name"
     end
   end
 end

@@ -1,4 +1,4 @@
-module Command
+module Services
     class Authentication
         def self.sign_up(params)
             email_validation = AbstractApi::EmailValidation.run(params[:email])
