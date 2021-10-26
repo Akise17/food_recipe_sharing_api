@@ -19,16 +19,27 @@ module Themealdb
                     result["category"] = meal["strCategory"]
                     result["subcategory"] = meal["strTags"]
                     result["national"] = meal["strArea"]
-                    result["ingredient"] = []
+                    result["ingredients"] = []
+                    result["instructions"] = []
 
                     20.times { |i|
                         if meal["strMeasure#{i+1}"] != " "
-                            result["ingredient"].push(meal["strMeasure#{i+1}"] + " " + meal["strIngredient#{i+1}"])
+                            ingredient = {
+                                ingredient: meal["strIngredient#{i+1}"],
+                                measure: meal["strMeasure#{i+1}"]
+                            }
+                            result["ingredients"].push(ingredient)
                         end
                     }
 
-                    instruction = meal["strInstructions"].split("\r\n")
-                    result["instruction"] = instruction
+                    instructions = meal["strInstructions"].split("\r\n")
+                    instructions.each do |instruction|
+                        result["instructions"].push(
+                            {
+                                instruction: instruction
+                            }
+                        )
+                    end
 
                     recipes.push(result)
                 end
