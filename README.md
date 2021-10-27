@@ -12,7 +12,7 @@ https://documenter.getpostman.com/view/1487291/UV5ddEGR
 1. Clone Master branch
 2. Setup DB Environtment 
 3. Type ```bundle Install``` in console
-4. Migrate the Database
+4. Migrate the Database (MySQL)
 
 ## Flow app
 1. User signup with email and role
