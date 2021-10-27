@@ -1,24 +1,16 @@
-# README
+# Food Sharing
+This is Backend API for Food Recipe sharing. user can view recomendation of food from external API and view from recipe contributor. User can only view recipe recomendation and recipe contributor. 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Rails version: 5.2.6 
+### Ruby Version: 2.5.3
+### bundle version: 1.17.3
 
-Things you may want to cover:
+## Initialize
+1. Clone Master branch
+2. Setup DB Environtment 
+3. Type ```bundle Install``` in console
+4. Migrate the Database
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Flow app
+1. User signup with email and role
+2. OTP will be send to User Email and active for 5 minutes
