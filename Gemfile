@@ -37,6 +37,8 @@ gem 'httparty'
 gem 'ransack'
 gem 'will_paginate'
 gem "paranoia"
+gem 'rspec-rails'
+gem 'simplecov'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
