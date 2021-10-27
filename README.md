@@ -5,6 +5,9 @@ This is Backend API for Food Recipe sharing. user can view recomendation of food
 ### Ruby Version: 2.5.3
 ### bundle version: 1.17.3
 
+## Postman documentation
+https://documenter.getpostman.com/view/1487291/UV5ddEGR
+
 ## Initialize
 1. Clone Master branch
 2. Setup DB Environtment 
