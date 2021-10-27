@@ -1,0 +1,7 @@
+test: 
+  base_url: <%= Rails.application.credentials.test[:themealdb][:base_url] %> 
+  apikey: <%= Rails.application.credentials.test[:themealdb][:apikey] %>
+
+development: 
+  base_url: <%= Rails.application.credentials.development[:themealdb][:base_url] %> 
+  apikey: <%= Rails.application.credentials.development[:themealdb][:apikey] %>
