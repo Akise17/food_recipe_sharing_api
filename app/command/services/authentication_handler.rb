@@ -1,7 +1,7 @@
 module Services
     class AuthenticationHandler
         EMAIL_OTP_HARDCODED = [
-            "ahmad.fauzan1603@gmail.com", #contributor 
+            "uchan.mochan@gmail.com", #contributor 
             "rezayantinpd@gmail.com" #user
           ]
         OTP_HARDCODED = "1234567"
@@ -21,7 +21,7 @@ module Services
                 else
                     code = 200
                 end
-                unless EMAIL_OTP_HARDCODED
+                unless EMAIL_OTP_HARDCODED.include? params[:email]
                     otp = Array.new(7){[*"0".."9"].sample}.join
                     hashed_password = BCrypt::Password.create(otp)
                     user.update_attributes(otp: hashed_password, otp_expired: Time.now + 5.minutes)
@@ -36,7 +36,7 @@ module Services
         def self.verify_otp(params)
             user = User.find_by_email_id(params[:email_id])
             
-            unless EMAIL_OTP_HARDCODED
+            unless EMAIL_OTP_HARDCODED.include? params[:email]
                 result = BCrypt::Password.new(user[:otp]) == params[:otp] && user.email_id == params[:email_id] && Time.now <= user[:otp_expired]
             else
                 result = params[:otp] == OTP_HARDCODED
