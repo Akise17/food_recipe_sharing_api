@@ -1,4 +1,11 @@
 class Api::V1::RecipeController < Api::ApplicationController
+    before_action :authorize, :except => [
+        :search_by_name, 
+        :recomendation_item,
+        :show_all_recipe,
+        :show_recipe_by_id
+    ]
+
     def search_by_name
        menu = Services::RecipeHandler.search_by_name(params[:keyword])
        render json: menu.as_json, status: menu[:meta][:status]
@@ -43,5 +50,13 @@ class Api::V1::RecipeController < Api::ApplicationController
             instructions_attributes: [:id, :recipe_id, :instruction]
         )
     end
+
+    def authorize
+        unless current_api_user.role == "contributor"
+            auth = Handler::Res.call(401, "Unauthorized user for this method", current_api_user) 
+            render json: auth.as_json, status: auth[:meta][:status] 
+        end
+    end
+    
     
 end
