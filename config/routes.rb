@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       post  "/verify", to: "authentication#verify_email"
 
       get   "/recipe/search", to: "recipe#search_by_name"
-      get   "/recipe/recomendation", to: "recipe#search_by_name"
+      get   "/recipe/recomendation", to: "recipe#recomendation_item"
       post  "/recipe/create", to: "recipe#create_recipe"
       put  "/recipe/update/:id", to: "recipe#update_recipe"
       delete  "/recipe/destroy/:id", to: "recipe#destroy_recipe"

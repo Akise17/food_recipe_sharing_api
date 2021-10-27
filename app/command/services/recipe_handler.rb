@@ -11,15 +11,12 @@ module Services
         end
         
         def self.create_recipe(recipe_params)
-            puts recipe_params.as_json
             recipe = Recipe.new(recipe_params)
 
             if recipe.save
                 Handler::Res.call(201, "Success to create recipe", 
                     recipe.as_json(:include => [:ingredients, :instructions])
-                )
-            else 
-                Handler::Res.call(400, "Failed to create recipe", recipe)
+                ) 
             end
         end
 
@@ -44,7 +41,8 @@ module Services
         end
 
         def self.show_recipe_by_id(params)
-            recipe = Recipe.find(params[:id])
+            begin
+                recipe = Recipe.find(params[:id])
 
             if recipe
                 Handler::Res.call(200, "Success to show all", 
@@ -53,17 +51,24 @@ module Services
             else 
                 Handler::Res.call(422, "Failed to show all", recipe)
             end
+            rescue => exception
+                Handler::Res.call(404, "Recipe not found", recipe)
+            end
         end
 
         def self.update_recipe(id, recipe_params)
-            recipe = Recipe.find(id)
+            begin
+                recipe = Recipe.find(id)
 
-            if recipe.update_attributes(recipe_params)
-                Handler::Res.call(200, "Success to create recipe", 
-                    recipe.as_json(:include => [:ingredients, :instructions])
-                )
-            else
-                Handler::Res.call(422, "Failed to update recipe", recipe)
+                if recipe.update_attributes(recipe_params)
+                    Handler::Res.call(200, "Success to create recipe", 
+                        recipe.as_json(:include => [:ingredients, :instructions])
+                    )
+                else
+                    Handler::Res.call(422, "Failed to update recipe", recipe)
+                end
+            rescue => exception
+                Handler::Res.call(404, "Recipe not found", recipe)
             end
         end
         

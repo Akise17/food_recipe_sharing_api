@@ -1,3 +1,7 @@
+test: 
+  base_url: <%= Rails.application.credentials.test[:abstract_api][:base_url] %> 
+  apikey: <%= Rails.application.credentials.test[:abstract_api][:apikey] %>
+
 development: 
   base_url: <%= Rails.application.credentials.development[:abstract_api][:base_url] %> 
   apikey: <%= Rails.application.credentials.development[:abstract_api][:apikey] %>

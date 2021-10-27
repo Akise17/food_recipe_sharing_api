@@ -12,13 +12,18 @@ class Api::V1::RecipeController < Api::ApplicationController
     end
 
     def recomendation_item
-        menu = Services::RecipeHandler.recomendation_item
+        menu = Services::RecipeHandler.recommendation_item
         render json: menu.as_json, status: menu[:meta][:status]
     end
 
     def create_recipe
-        recipe = Services::RecipeHandler.create_recipe(recipe_params)
-        render json: recipe.as_json, status: recipe[:meta][:status]
+        begin
+            recipe = Services::RecipeHandler.create_recipe(recipe_params)
+            render json: recipe.as_json, status: recipe[:meta][:status] 
+        rescue => exception
+            recipe = Handler::Res.call(400, "Failed to create recipe", recipe)
+            render json: recipe.as_json, status: recipe[:meta][:status]
+        end
     end
     
     def show_all_recipe
@@ -32,8 +37,13 @@ class Api::V1::RecipeController < Api::ApplicationController
     end
 
     def update_recipe
-        recipe = Services::RecipeHandler.update_recipe(params[:id], recipe_params)
-        render json: recipe.as_json, status: recipe[:meta][:status]
+        begin
+            recipe = Services::RecipeHandler.update_recipe(params[:id], recipe_params)
+            render json: recipe.as_json, status: recipe[:meta][:status]
+        rescue => exception
+            recipe = Handler::Res.call(400, "Failed to update recipe", recipe)
+            render json: recipe.as_json, status: recipe[:meta][:status]
+        end
     end
     
     def destroy_recipe

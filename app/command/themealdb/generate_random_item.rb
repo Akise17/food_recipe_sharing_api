@@ -8,19 +8,18 @@ module Themealdb
         API_KEY = Rails.application.config_for(:themealdb)["apikey"]
     
         def self.run
-            response = generate = []
+            response = generate 
+
+            recipes = []
             
             begin
-                puts "Count #{response["meals"].count}"
                 response["meals"].each do |meal|
-                    puts "Meal"
-                    puts meal.as_json
                     result = Hash.new
                     result["name"] = meal["strMeal"]
                     result["category"] = meal["strCategory"]
                     result["subcategory"] = meal["strTags"]
                     result["national"] = meal["strArea"]
-                    result["ingredient"] = []
+                    result["ingredients"] = []
                     result["instructions"] = []
 
                     20.times { |i|
@@ -33,7 +32,7 @@ module Themealdb
                         end
                     }
 
-                    instruction = meal["strInstructions"].split("\r\n")
+                    instructions = meal["strInstructions"].split("\r\n")
                     instructions.each do |instruction|
                         result["instructions"].push(
                             {
@@ -49,13 +48,13 @@ module Themealdb
                 puts exception.as_json    
             end
             
-            return response.success? ? :ok : :not_ok, response.code, recipes
+            return recipes
         end
     
         private
         def self.generate
             get(
-                "/#{API_KEY}/randomselection.php", 
+                "/#{API_KEY}/random.php", 
             )
         end
     end
